@@ -292,6 +292,9 @@ public class StatusBar extends SystemUI implements DemoMode,
     private static final String LOCKSCREEN_CHARGING_ANIMATION_STYLE =
             "system:" + Settings.System.LOCKSCREEN_CHARGING_ANIMATION_STYLE;
 
+    private static final String QS_TILE_TITLE_VISIBILITY =
+            "system:" + Settings.System.QS_TILE_TITLE_VISIBILITY;
+
     private static final String BANNER_ACTION_CANCEL =
             "com.android.systemui.statusbar.banner_action_cancel";
     private static final String BANNER_ACTION_SETUP =
@@ -738,6 +741,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         tunerService.addTunable(this, STATUS_BAR_BRIGHTNESS_CONTROL);
         tunerService.addTunable(this, FORCE_SHOW_NAVBAR);
         tunerService.addTunable(this, LOCKSCREEN_CHARGING_ANIMATION_STYLE);
+        tunerService.addTunable(this, QS_TILE_TITLE_VISIBILITY);
 
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
 
@@ -4945,6 +4949,10 @@ public class StatusBar extends SystemUI implements DemoMode,
             mChargingAnimation = TunerService.parseInteger(newValue, 1);
             if (mKeyguardIndicationController != null)
                 mKeyguardIndicationController.updateChargingIndication(mChargingAnimation);
+        } else if (QS_TILE_TITLE_VISIBILITY.equals(key)) {
+            if (mQSPanel != null) {
+            mQSPanel.updateResources();
+            }
         }
     }
     // End Extra BaseStatusBarMethods.
