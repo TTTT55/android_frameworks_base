@@ -45,7 +45,9 @@ LOCAL_REQUIRED_MODULES := \
 	IconPackRoundedThemePickerOverlay \
 	IconShapeRoundedRectOverlay \
 	IconShapeSquircleOverlay \
+	IconShapeTaperedRectOverlay \
 	IconShapeTeardropOverlay \
+	IconShapeVesselOverlay \
 	NavigationBarMode3ButtonOverlay \
 	NavigationBarMode2ButtonOverlay \
 	NavigationBarModeGesturalOverlay \
