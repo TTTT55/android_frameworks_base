@@ -292,6 +292,15 @@ public class StatusBar extends SystemUI implements DemoMode,
     private static final String LOCKSCREEN_CHARGING_ANIMATION_STYLE =
             "system:" + Settings.System.LOCKSCREEN_CHARGING_ANIMATION_STYLE;
 
+    private static final String QS_ROWS_PORTRAIT =
+            "system:" + Settings.System.QS_ROWS_PORTRAIT;
+    private static final String QS_ROWS_LANDSCAPE =
+            "system:" + Settings.System.QS_ROWS_LANDSCAPE;
+    private static final String QS_COLUMNS_PORTRAIT =
+            "system:" + Settings.System.QS_COLUMNS_PORTRAIT;
+    private static final String QS_COLUMNS_LANDSCAPE =
+            "system:" + Settings.System.QS_COLUMNS_LANDSCAPE;
+
     private static final String QS_TILE_TITLE_VISIBILITY =
             "system:" + Settings.System.QS_TILE_TITLE_VISIBILITY;
 
@@ -742,6 +751,10 @@ public class StatusBar extends SystemUI implements DemoMode,
         tunerService.addTunable(this, FORCE_SHOW_NAVBAR);
         tunerService.addTunable(this, LOCKSCREEN_CHARGING_ANIMATION_STYLE);
         tunerService.addTunable(this, QS_TILE_TITLE_VISIBILITY);
+        tunerService.addTunable(this, QS_ROWS_PORTRAIT);
+        tunerService.addTunable(this, QS_ROWS_LANDSCAPE);
+        tunerService.addTunable(this, QS_COLUMNS_PORTRAIT);
+        tunerService.addTunable(this, QS_COLUMNS_LANDSCAPE);
 
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
 
@@ -4952,6 +4965,11 @@ public class StatusBar extends SystemUI implements DemoMode,
         } else if (QS_TILE_TITLE_VISIBILITY.equals(key)) {
             if (mQSPanel != null) {
             mQSPanel.updateResources();
+            }
+        } else if ((QS_ROWS_PORTRAIT.equals(key))||(QS_ROWS_LANDSCAPE.equals(key))||
+                  (QS_COLUMNS_PORTRAIT.equals(key))||(QS_COLUMNS_LANDSCAPE.equals(key))) {
+            if (mQSPanel != null) {
+                mQSPanel.updateResources();
             }
         }
     }
