@@ -165,7 +165,7 @@ public class FaceDialogView extends BiometricDialogView {
         if (newSize == SIZE_SMALL) {
             // These fields are required and/or always hold a spot on the UI, so should be set to
             // INVISIBLE so they keep their position
-            mTitleText.setVisibility(mAppLockDialog ? View.GONE : View.INVISIBLE);
+            mTitleText.setVisibility(View.INVISIBLE);
             mErrorText.setVisibility(View.INVISIBLE);
             mNegativeButton.setVisibility(View.INVISIBLE);
 
@@ -247,7 +247,7 @@ public class FaceDialogView extends BiometricDialogView {
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
                     // Set the visibility of opacity-animating views back to VISIBLE
-                    if (!mAppLockDialog) mTitleText.setVisibility(View.VISIBLE);
+                    mTitleText.setVisibility(View.VISIBLE);
                     mErrorText.setVisibility(View.VISIBLE);
                     mNegativeButton.setVisibility(View.VISIBLE);
                     mTryAgainButton.setVisibility(View.VISIBLE);
@@ -264,7 +264,6 @@ public class FaceDialogView extends BiometricDialogView {
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
                     mSize = SIZE_BIG;
-                    updateSize(mSize);
                 }
             });
             as.play(outlineAnimator).with(iconAnimator).with(opacityAnimator)
@@ -286,6 +285,7 @@ public class FaceDialogView extends BiometricDialogView {
         bundle.putInt(KEY_DIALOG_SIZE, mSize);
         bundle.putBoolean(KEY_DIALOG_ANIMATED_IN, mDialogAnimatedIn);
     }
+
 
     @Override
     protected void handleResetMessage() {

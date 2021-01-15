@@ -157,7 +157,6 @@ import com.android.server.usage.UsageStatsService;
 import com.android.server.vr.VrManagerService;
 import com.android.server.webkit.WebViewUpdateService;
 import com.android.server.wm.ActivityTaskManagerService;
-import com.android.server.wm.AppLockService;
 import com.android.server.wm.WindowManagerGlobalLock;
 import com.android.server.wm.WindowManagerService;
 
@@ -1106,10 +1105,6 @@ public final class SystemServer {
 
             traceBeginAndSlog("PinnerService");
             mSystemServiceManager.startService(PinnerService.class);
-            traceEnd();
-
-            traceBeginAndSlog("StartAppLockService");
-            mSystemServiceManager.startService(AppLockService.class);
             traceEnd();
 
             traceBeginAndSlog("SignedConfigService");
