@@ -102,13 +102,12 @@ public class MobileSignalController extends SignalController<
     private ImsManager mImsManager;
     private ImsManager.Connector mImsManagerConnector;
     private int mCallState = TelephonyManager.CALL_STATE_IDLE;
-    private int mShowVolteIcon = 0;
+    private boolean mShowVolteIcon;
     private boolean mShow4gForLte;
     private int mShowVoWIFIicon = 0;
     private boolean mOverride;
 
-     public static final String VOLTE_ICON_STYLE =
-            "system:" + Settings.System.VOLTE_ICON_STYLE;
+    private static final String SHOW_VOLTE_ICON = "show_volte_icon";
     private static final String SHOW_FOURG_ICON =
             "system:" + Settings.System.SHOW_FOURG_ICON;
     public static final String VOWIFI_ICON_STYLE =
@@ -171,7 +170,7 @@ public class MobileSignalController extends SignalController<
             }
         };
 
-        Dependency.get(TunerService.class).addTunable(this, VOLTE_ICON_STYLE);
+        Dependency.get(TunerService.class).addTunable(this, SHOW_VOLTE_ICON);
         Dependency.get(TunerService.class).addTunable(this, SHOW_FOURG_ICON);
         Dependency.get(TunerService.class).addTunable(this, VOWIFI_ICON_STYLE);
         Dependency.get(TunerService.class).addTunable(this, VOLTE_VOWIFI_OVERRIDE);
@@ -190,8 +189,8 @@ public class MobileSignalController extends SignalController<
     @Override
     public void onTuningChanged(String key, String newValue) {
         switch (key) {
-            case VOLTE_ICON_STYLE:
-                mShowVolteIcon = TunerService.parseInteger(newValue, 0);
+            case SHOW_VOLTE_ICON:
+                mShowVolteIcon = TunerService.parseIntegerSwitch(newValue, false);
                 Log.d(mTag, "mShowVolteIcon=" + mShowVolteIcon);
                 notifyListeners();
                 break;
@@ -388,59 +387,16 @@ public class MobileSignalController extends SignalController<
         return getCurrentIconId();
     }
 
-    private int getVolteVowifiResId() {
+    private boolean isVolteSwitchOn() {
+        return mImsManager != null && mImsManager.isEnhanced4gLteModeSettingEnabledByUser();
+    }
+
+    private int getVolteResId() {
         int resId = 0;
         int voiceNetTye = getVoiceNetworkType();
-        if (mOverride && mConfig.showVowifiIcon && mShowVoWIFIicon > 0 && isVowifiAvailable()) {
-            if (!isCallIdle()) {
-                resId = R.drawable.ic_vowifi_calling;
-            } else {
-                switch (mShowVoWIFIicon) {
-                    case 1:
-                        resId = R.drawable.ic_vowifi;
-                        break;
-                    case 2:
-                        resId = R.drawable.ic_vowifi_oneplus;
-                        break;
-                    case 3:
-                        resId = R.drawable.ic_vowifi_moto;
-                        break;
-                    case 4:
-                        resId = R.drawable.ic_vowifi_asus;
-                        break;
-                    case 5:
-                        resId = R.drawable.ic_vowifi_emui;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        } else if (mImsManager != null && mShowVolteIcon > 0 && isVolteAvailable()) {
-            switch (mShowVolteIcon) {
-                case 1:
-                    resId = R.drawable.ic_volte1;
-                    break;
-                case 2:
-                    resId = R.drawable.ic_volte2;
-                    break;
-                case 3:
-                    resId = R.drawable.ic_volte3;
-                    break;
-                case 4:
-                    resId = R.drawable.ic_volte4;
-                    break;
-                case 5:
-                    resId = R.drawable.ic_volte5;
-                    break;
-                case 6:
-                    resId = R.drawable.ic_volte6;
-                    break;
-                case 8:
-                    resId = R.drawable.ic_volte8;
-                    break;
-                default:
-                    break;
-            }
+        if ((mCurrentState.voiceCapable || mCurrentState.videoCapable)
+                &&  mCurrentState.imsRegistered) {
+            resId = R.drawable.ic_volte;
         } else if ((mDataNetType == TelephonyManager.NETWORK_TYPE_LTE
                 || mDataNetType == TelephonyManager.NETWORK_TYPE_LTE_CA)
                 && voiceNetTye  == TelephonyManager.NETWORK_TYPE_UNKNOWN) {
@@ -539,16 +495,8 @@ public class MobileSignalController extends SignalController<
                 && mCurrentState.activityOut;
         showDataIcon &= mCurrentState.isDefault || dataDisabled;
         int typeIcon = (showDataIcon || mConfig.alwaysShowDataRatIcon) ? icons.mDataType : 0;
-        int voltewifiIcon = getVolteVowifiResId();
-
-        MobileIconGroup vowifiIconGroup = getVowifiIconGroup();
-        if (mConfig.showVowifiIcon && vowifiIconGroup != null) {
-            typeIcon = vowifiIconGroup.mDataType;
-            statusIcon = new IconState(true,
-                    mCurrentState.enabled && !mCurrentState.airplaneMode? statusIcon.icon : 0,
-                    statusIcon.contentDescription);
-        }
-
+        int volteIcon = (mShowVolteIcon && mConfig.showVolteIcon
+                && isVolteSwitchOn()) ? getVolteResId() : 0;
         callback.setMobileDataIndicators(statusIcon, qsIcon, typeIcon, qsTypeIcon,
                 activityIn, activityOut, voltewifiIcon, dataContentDescription,
                 dataContentDescriptionHtml, description, icons.mIsWide,

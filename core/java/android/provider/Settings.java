@@ -4588,12 +4588,6 @@ public final class Settings {
         public static final String QS_BOTTOM_BRIGHTNESS = "qs_bottom_brightness";
 
         /**
-         * Whether to display VoLTE icon when VoLTE present
-         * @hide
-         */
-        public static final String VOLTE_ICON_STYLE = "volte_icon_style";
-
-        /**
          * Whether to display qs tile titles in the qs panel
          * @hide
          */
@@ -4638,6 +4632,8 @@ public final class Settings {
         public static final String VOLTE_VOWIFI_OVERRIDE = "volte_vowifi_override";
 
         /**
+=======
+>>>>>>> parent of f8c499dc9501... Add option to select VoLTE icon [1/2]
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
