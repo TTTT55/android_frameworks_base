@@ -4547,15 +4547,6 @@ public final class Settings {
         private static final Validator CHARGING_ANIMATION_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
-         * Whether to show the battery info on the lockscreen while charging
-         * @hide
-         */
-        public static final String LOCKSCREEN_BATTERY_INFO = "lockscreen_battery_info";
-        /** @hide */
-        private static final Validator LOCKSCREEN_BATTERY_INFO_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
          * Adaptive playback
          * Automatically pause media when the volume is muted and
          * will resume automatically when volume is restored.
@@ -4632,8 +4623,6 @@ public final class Settings {
         public static final String VOLTE_VOWIFI_OVERRIDE = "volte_vowifi_override";
 
         /**
-=======
->>>>>>> parent of f8c499dc9501... Add option to select VoLTE icon [1/2]
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -4699,7 +4688,6 @@ public final class Settings {
             ALARM_ALERT,
             NOTIFICATION_LIGHT_PULSE,
             CHARGING_ANIMATION,
-            LOCKSCREEN_BATTERY_INFO,
         };
 
         /**
@@ -4820,7 +4808,6 @@ public final class Settings {
             PRIVATE_SETTINGS.add(SHOW_BATTERY_PERCENT);
             PRIVATE_SETTINGS.add(DISPLAY_COLOR_MODE);
             PRIVATE_SETTINGS.add(CHARGING_ANIMATION);
-            PRIVATE_SETTINGS.add(LOCKSCREEN_BATTERY_INFO);
             PRIVATE_SETTINGS.add(BRIGHTNESS_SLIDER_QS_UNEXPANDED);
         }
 
@@ -4918,7 +4905,6 @@ public final class Settings {
             VALIDATORS.put(ACCELEROMETER_ROTATION_ANGLES,
                     ACCELEROMETER_ROTATION_ANGLES_VALIDATOR);
             VALIDATORS.put(CHARGING_ANIMATION, CHARGING_ANIMATION_VALIDATOR);
-            VALIDATORS.put(LOCKSCREEN_BATTERY_INFO, LOCKSCREEN_BATTERY_INFO_VALIDATOR);
             VALIDATORS.put(BRIGHTNESS_SLIDER_QS_UNEXPANDED, BRIGHTNESS_SLIDER_QS_UNEXPANDED_VALIDATOR);
         }
 
